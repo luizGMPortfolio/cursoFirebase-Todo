@@ -1,0 +1,10 @@
+html,body {
+  color: #444;
+  font-family: Tahoma;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  height: 100%;
+}

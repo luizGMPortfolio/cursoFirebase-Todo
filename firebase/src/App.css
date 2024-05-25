@@ -8,3 +8,17 @@ html,body {
   background-color: #fff;
   height: 100%;
 }
+
+.app{
+  width: 512px;
+  margin: auto;
+  box-shadow: 4px 4px 20px #888;
+  padding: 20px;
+  border-radius: 20px;
+}
+.center{
+  text-align: center;
+}
+.startHidden{
+  display: flex;
+}

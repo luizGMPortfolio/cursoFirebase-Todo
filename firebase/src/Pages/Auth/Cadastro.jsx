@@ -1,21 +1,48 @@
 //css
+import './Auth.css'
 //hooks
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuthentication } from '../../hooks/useAuthentication'
 //components
 import TodoList from '../../assets/todoList.png'
 const Cadastro = () => {
 
+    //useStates
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
+    const [error, setError] = useState('');
+    //useAuth
+    const { createUser, loading, error: authError, Verifyemail} = useAuthentication();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault()
 
-        console.log(email)
-        console.log(password)
-        
+        setError("");
+
+        const user = {
+            email,
+            password,
+        }
+
+        try {
+
+            const res = await createUser(user)
+            console.log(user)
+
+        } catch (error) {
+            console.log(error);
+            setError(error.message);
+        }
+
     }
+
+    useEffect(() => {
+        if (authError) {
+            setError(authError)
+        }
+
+    }, [authError])
 
     return (
         <div className='login'>
@@ -26,10 +53,17 @@ const Cadastro = () => {
                 <form onSubmit={handleSubmit}>
                     <h3 id="authFormTitle">Insira seus dados para se cadastrar</h3>
                     <label for="email">E-mail: </label>
-                    <input type="email" placeholder="E-mail" id="email" onChange={(e) => setEmail(e.target.value)}/>
+                    <input type="email" placeholder="E-mail" id="email" onChange={(e) => setEmail(e.target.value)} />
                     <label for="password">Senha: </label>
-                    <input type="password" placeholder="Senha" id="password" onChange={(e) => setPassword(e.target.value)}/>
-                    <button>Cadastrar</button>
+                    <input type="password" placeholder="Senha" id="password" onChange={(e) => setPassword(e.target.value)} />
+                    {!loading &&
+                        <button>Cadastrar</button>
+                    }
+                    {loading &&
+                        <button className='btn' disabled>Aguarde...</button>
+
+                    }
+                    {error && <p className='error'>{error}</p>}
                 </form>
 
 
@@ -39,10 +73,6 @@ const Cadastro = () => {
                 </p>
 
 
-                <p id="access" className="startHidden">
-                    Já possui uma conta?
-                    <button className=''>Acesse a sua conta</button>
-                </p>
             </div>
         </div>
     )
